@@ -1,4 +1,5 @@
 import os
+import sys
 import json
 import threading
 import tkinter as tk
@@ -7,6 +8,10 @@ from tkinter import ttk
 from tkinterdnd2 import DND_FILES, TkinterDnD
 import ffmpeg
 from ffmpeg_progress_yield import FfmpegProgress
+
+# Point ffmpeg-python to bundled binaries when running as .exe
+if hasattr(sys, '_MEIPASS'):
+    os.environ["PATH"] = os.path.join(sys._MEIPASS, "ffmpeg_bin") + os.pathsep + os.environ.get("PATH", "")
 
 CONFIG_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".app_config.json")
 
