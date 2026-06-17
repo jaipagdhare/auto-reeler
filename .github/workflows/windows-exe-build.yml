@@ -1,0 +1,41 @@
+name: Build Windows EXE
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build-windows-exe:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          pip install pyinstaller tkinterdnd2 ffmpeg-python ffmpeg-progress-yield
+
+      - name: Build executable
+        shell: bash
+        run: |
+          pyinstaller --clean --noconfirm app.spec
+          test -f dist/app.exe
+
+      - name: Upload executable artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: auto-reeler-windows-exe
+          path: dist/app.exe
+          if-no-files-found: error
+          retention-days: 7
