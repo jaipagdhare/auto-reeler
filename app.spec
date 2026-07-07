@@ -8,8 +8,7 @@ hiddenimports = []
 tmp_ret = collect_all('tkinterdnd2')
 datas += tmp_ret[0]; binaries += tmp_ret[1]; hiddenimports += tmp_ret[2]
 
-project_dir = Path(__file__).resolve().parent
-ffmpeg_bin_dir = project_dir / "ffmpeg_bin"
+ffmpeg_bin_dir = Path("ffmpeg_bin").resolve()
 for exe_name in ("ffmpeg.exe", "ffprobe.exe"):
     exe_path = ffmpeg_bin_dir / exe_name
     if exe_path.exists():
