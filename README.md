@@ -30,18 +30,24 @@
  └─────────────────────────────────────────┘
 
 
- Useful commands
+## 🪟 Standalone Windows EXE (no prerequisites needed)
+
+- Go to **Actions → Build Windows EXE** and download the `auto-reeler-windows-exe` artifact.
+- Extract and run `app.exe` on Windows (no Python/FFmpeg install required).
+
+## Useful commands (local development)
+
+```bash
 # Clone & enter repo
-git clone [https://github.com/your-username/influenca.git](https://github.com/your-username/influenca.git) && cd influenca
+git clone https://github.com/your-username/auto-reeler.git && cd auto-reeler
 
 # Install dependencies
 pip install tkinterdnd2 ffmpeg-python ffmpeg-progress-yield
 
-# Run it!
+# Run app
 python app.py
 
-# Install compiler
+# Build executable (after placing ffmpeg.exe + ffprobe.exe in ./ffmpeg_bin)
 pip install pyinstaller
-
-# Package into a single file with embedded assets
-pyinstaller --noconsole --onefile --add-data "ffmpeg_bin;ffmpeg_bin" --collect-all tkinterdnd2 app.py
+pyinstaller --clean --noconfirm app.spec
+```
