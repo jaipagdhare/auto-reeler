@@ -29,6 +29,21 @@ jobs:
           python -m pip install --upgrade pip
           pip install pyinstaller tkinterdnd2 ffmpeg-python ffmpeg-progress-yield
 
+      - name: Download FFmpeg binaries
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = "Stop"
+          New-Item -ItemType Directory -Path ffmpeg_bin -Force | Out-Null
+          Invoke-WebRequest -Uri "https://www.gyan.dev/ffmpeg/builds/ffmpeg-release-essentials.zip" -OutFile "ffmpeg.zip"
+          Expand-Archive -Path "ffmpeg.zip" -DestinationPath "ffmpeg_extract" -Force
+          $ffmpegExe = Get-ChildItem -Path "ffmpeg_extract" -Recurse -Filter "ffmpeg.exe" | Select-Object -First 1
+          $ffprobeExe = Get-ChildItem -Path "ffmpeg_extract" -Recurse -Filter "ffprobe.exe" | Select-Object -First 1
+          if (-not $ffmpegExe -or -not $ffprobeExe) {
+            throw "Failed to locate ffmpeg.exe or ffprobe.exe in downloaded archive."
+          }
+          Copy-Item $ffmpegExe.FullName "ffmpeg_bin/ffmpeg.exe" -Force
+          Copy-Item $ffprobeExe.FullName "ffmpeg_bin/ffprobe.exe" -Force
+
       - name: Build executable
         shell: bash
         run: |

@@ -1,11 +1,18 @@
 # -*- mode: python ; coding: utf-8 -*-
 from PyInstaller.utils.hooks import collect_all
+from pathlib import Path
 
 datas = []
 binaries = []
 hiddenimports = []
 tmp_ret = collect_all('tkinterdnd2')
 datas += tmp_ret[0]; binaries += tmp_ret[1]; hiddenimports += tmp_ret[2]
+
+ffmpeg_bin_dir = Path("ffmpeg_bin").resolve()
+for exe_name in ("ffmpeg.exe", "ffprobe.exe"):
+    exe_path = ffmpeg_bin_dir / exe_name
+    if exe_path.exists():
+        datas.append((str(exe_path), "ffmpeg_bin"))
 
 
 a = Analysis(
